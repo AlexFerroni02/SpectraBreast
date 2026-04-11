@@ -1,0 +1,16 @@
+experiment_name: "exp_01_cnn_baseline"
+dataset:
+  name: "IBD"
+  path: "/content/drive/Othercomputers/Il mio laptop/SpectraBreast/data/IBD/Processed/IBD_Dataset_500pt.mat"
+  batch_size: 32
+
+model:
+  architecture: "RamanCNN"
+  input_length: 500
+  n_classes: 2
+
+training:
+  epochs: 200     # Preso dai tuoi LONG_CNN_EPOCHS
+  learning_rate: 0.0005 # lr=5e-4
+  weight_decay: 0.001   # weight_decay=1e-3
+  patience: 15

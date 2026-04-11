@@ -66,5 +66,39 @@ mio_progetto/
    - I pesi del modello addestrato.
    - Una **copia HTML del notebook eseguito** (`jupyter nbconvert`), utile come report visivo permanente per tesi e pubblicazioni.
 
+## � Modalità di Validazione (Split Schemes)
+
+Il progetto utilizza un singolo notebook unificato (`03_classification.ipynb`) capace di adattarsi dinamicamente alla strategia di validazione richiesta. È sufficiente specificare la modalità nel file YAML di configurazione sotto la chiave `split.scheme`:
+
+- **Holdout (`scheme: "holdout"`)**:
+  - Classico Train / Validation / Test split (es. 70/15/15).
+  - Ideale per dataset con pazienti tutti indipendenti (es. IBD).
+  - Salva i pesi (`best_weights.pth`) e il resoconto (`metrics.json`) direttamente nella root dell'esperimento.
+- **Leave-One-Map-Out (`scheme: "lomo"`)**:
+  - Estrae iterativamente una singola mappa intera come Test Set, usando il resto per Train/Val.
+  - Ideale quando ci sono più spettri per un singolo paziente/mappa (es. TROPHY) per evitare data leakage.
+  - Crea automaticamente delle sotto-cartelle per ogni fold (`experiments/.../folds/LOMO-M01/`) e aggrega i risultati finali globali.
+- **K-Fold (`scheme: "kfold"`)**:
+  - Stratified K-Fold Cross Validation. Mischia l'intero dataset e lo divide in $K$ fold.
+  - Ideale per valutazioni statisticamente robuste su dataset standard senza struttura a mappe.
+  - Genera sotto-cartelle (`folds/KFOLD-01/`) e calcola le metriche medie e aggregate esattamente come il LOMO.
+
+**Come lanciare le varie modalità?**
+Basta modificare la cella iniziale del notebook `03_classification.ipynb`:
+```python
+# Per lanciare un esperimento Holdout:
+config_file = 'configs/classification/IBD/CNN/exp_01_cnn_baseline.yaml'
+
+# Oppure, per lanciare un K-Fold:
+# config_file = 'configs/classification/IBD/CNN/exp_02_cnn_kfold.yaml'
+
+# Oppure, per lanciare un LOMO:
+# config_file = 'configs/classification/Trophy/CNN/exp_01_cnn_lomo.yaml'
+```
+Tutto il resto verrà gestito automaticamente dalla pipeline.
+
 ## 🔍 Explainability (XAI)
-Per garantire la trasparenza scientifica del progetto, il notebook `04_explainability_xai.ipynb` è dedicato all'estrazione delle interpretazioni visive. Caricando i pesi pre-addestrati da `experiments/` ed eseguendo i moduli in `src/xai/`, genererà e salverà le mappe di attenzione/attivazione in cartelle di confronto dedicate sotto `experiments/explainability/`.
+Per garantire la trasparenza scientifica del progetto, il notebook `04_explainability_xai.ipynb` è dedicato all'estrazione delle interpretazioni visive. Caricando i pesi pre-addestrati da `experiments/` ed eseguendo i moduli in `src/xai/`, genererà e salverà le mappe di attenzione/attivazione in cartelle di confronto dedicate.
+
+- Se l'esperimento originale era **Holdout**, calcolerà lo XAI su quel singolo Test Set.
+- Se l'esperimento era **LOMO / K-Fold**, entrerà automaticamente in ogni singolo fold, estrarrà i gradienti, e li **aggregherà globalmente** per generare un profilo medio robusto tra tutti i pazienti/fold.
