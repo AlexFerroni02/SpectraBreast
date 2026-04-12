@@ -3,9 +3,9 @@ __pycache__/
 *.py[codz]
 *$py.class
 data/
-
+sb_env/
 # C extensions
-experiments/
+job_*
 *.so
 .tmp.driveupload/
 # Distribution / packaging

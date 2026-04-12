@@ -1,4 +1,4 @@
-experiment_name: "exp_01_cnn_baseline"
+experiment_name: "exp_02_cnn_improved"
 dataset:
   name: "IBD"
   path: "data/IBD/Processed/IBD_Dataset_500pt.mat"
@@ -10,8 +10,8 @@ model:
   n_classes: 2
 
 training:
-  epochs: 100     # Modificato da 200 a 100 come nel notebook migliore
-  learning_rate: 0.0005 # lr=5e-4
-  weight_decay: 0.001   # weight_decay=1e-3
+  epochs: 100
+  learning_rate: 0.0005
+  weight_decay: 0.001
   patience: 50
   scheduler_patience: 7

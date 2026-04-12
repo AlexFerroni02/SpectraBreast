@@ -1,7 +1,7 @@
 experiment_name: "exp_02_cnn_kfold"
 dataset:
   name: "IBD"
-  path: "/content/drive/Othercomputers/Il mio laptop/SpectraBreast/data/IBD/Processed/IBD_Dataset_500pt.mat"
+  path: "data/IBD/Processed/IBD_Dataset_500pt.mat"
   batch_size: 32
 
 split:

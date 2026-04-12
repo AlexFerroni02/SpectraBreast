@@ -1,0 +1,27 @@
+{
+    "experiment_name": "exp_01_cnn_baseline",
+    "created_at": "2026-04-12 10:19:56",
+    "seed": 42,
+    "dataset": {
+        "name": "IBD",
+        "path": "data/IBD/Processed/IBD_Dataset_500pt.mat"
+    },
+    "model": {
+        "architecture": "RamanCNN",
+        "input_length": 500,
+        "n_classes": 2
+    },
+    "artifacts": {
+        "config_used": "experiments/classification/IBD/CNN/exp_01_cnn_baseline/config_usato.yaml",
+        "weights_best": "experiments/classification/IBD/CNN/exp_01_cnn_baseline/best_weights.pth",
+        "split_indices": "experiments/classification/IBD/CNN/exp_01_cnn_baseline/split_indices.npz",
+        "metrics": "experiments/classification/IBD/CNN/exp_01_cnn_baseline/metrics.json",
+        "report_html": "experiments/classification/IBD/CNN/exp_01_cnn_baseline/report_eseguito.html"
+    },
+    "metrics_test": {
+        "accuracy": 0.9142857142857143,
+        "macro_f1": 0.913151364764268,
+        "roc_auc": 0.9591836734693877,
+        "test_loss": 0.29084303975105286
+    }
+}
