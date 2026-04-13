@@ -39,6 +39,7 @@ mio_progetto/
 │   ├── 01_data_exploration.ipynb
 │   ├── 02_pretraining.ipynb
 │   ├── 03_classification.ipynb
+│   ├── 03b_classification_finetune.ipynb
 │   └── 04_explainability_xai.ipynb
 │
 └── experiments/               # 💾 SCONTRINI: Output salvati in automatico (Lo Storico)
@@ -97,6 +98,73 @@ config_file = 'configs/classification/IBD/CNN/exp_01_cnn_baseline.yaml'
 ```
 Tutto il resto verrà gestito automaticamente dalla pipeline.
 
+## 🧾 Configurazione YAML (guida rapida)
+
+### 1) Dataset e chiavi dei .mat
+Per IBD puoi usare i default. Per TROPHY (o file con nomi variabili diversi) specifica le chiavi:
+```yaml
+dataset:
+   name: "Trophy"
+   path: "data/Trophy/TROPHY_500pt_Labeled.mat"
+   batch_size: 32
+   keys:
+      x: "X_trophy_500"
+      y: "Ytrophy_binary"
+      groups: "MappeID"
+```
+Se preferisci, puoi usare anche `x_key`, `y_key`, `group_key`, `axis_key` al posto di `keys`.
+
+### 2) Split (holdout / kfold / lomo)
+```yaml
+split:
+   scheme: "kfold"        # holdout | kfold | lomo
+   seed: 42
+   holdout:
+      test_size: 0.30
+      val_size_of_temp: 0.50
+   kfold:
+      n_splits: 5
+      val_size: 0.20
+   lomo:
+      val_size: 0.20
+      skip_if_single_class_test: true
+```
+
+### 3) Training (scratch)
+```yaml
+training:
+   epochs: 100
+   learning_rate: 0.0005
+   weight_decay: 0.001
+   patience: 50
+   scheduler_patience: 7
+```
+
+### 4) Training (linear probing + fine-tuning)
+Usa il notebook `03b_classification_finetune.ipynb` e lo script dedicato.
+```yaml
+pretrain:
+   pretrained_path: "/path/to/pretrained.pth"
+
+training:
+   mode: "finetune"        # scratch | linear_probe | finetune
+   lp_epochs: 10
+   ft_epochs: 40
+   lr_lp: 1e-3
+   lr_ft: 1e-4
+   weight_decay: 1e-4
+   patience: 15
+   scheduler_patience: 7
+   grad_clip: 1.0
+   head_attr: "classifier"
+```
+
+### 5) XAI (pesi da usare)
+```yaml
+xai:
+   weights_path: "/path/to/weights.pth"
+```
+
 ## 🔍 Explainability (XAI)
 Per garantire la trasparenza scientifica del progetto, il notebook `04_explainability_xai.ipynb` è dedicato all'estrazione delle interpretazioni visive. Caricando i pesi pre-addestrati da `experiments/` ed eseguendo i moduli in `src/xai/`, genererà e salverà le mappe di attenzione/attivazione in cartelle di confronto dedicate.
 
@@ -112,6 +180,6 @@ Per evitare duplicazioni (codice "spaghetti") e facilitare la manutenzione, il c
    - Contiene file come `trainer.py` e `plotting.py` (facoltativi) per spostare i complessi loop di addestramento e generazione grafici fuori dai notebook.
 2. **Notebook Specializzati (`notebooks/`)**:
    - `03a_classification_baseline.ipynb`: Addestra modelli da zero (su IBD o TROPHY, a seconda del config YAML).
-   - `03b_classification_finetuning.ipynb`: (Opzionale) Addestra modelli caricando pesi pre-addestrati, gestendo logiche complesse come Layer Freezing o Learning Rate Schedulers specifici per il Transfer Learning.
+   - `03b_classification_finetune.ipynb`: (Opzionale) Addestra modelli caricando pesi pre-addestrati, gestendo logiche come Linear Probing e Fine-Tuning.
 
 In questo modo, se vuoi cambiare dataset o passare da K-Fold a LOMO, **non crei un nuovo notebook**, ma crei semplicemente un nuovo file `.yaml`.
