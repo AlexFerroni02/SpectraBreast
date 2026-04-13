@@ -1,0 +1,23 @@
+experiment_name: "exp_03_cnn_kfold_test_pipeline"
+dataset:
+  name: "IBD"
+  path: "data/IBD/Processed/IBD_Dataset_500pt.mat"
+  batch_size: 32
+
+split:
+  scheme: "kfold"
+  n_splits: 5
+  seed: 42
+  val_size: 0.20
+
+model:
+  architecture: "RamanCNN"
+  input_length: 500
+  n_classes: 2
+
+training:
+  epochs: 50     
+  learning_rate: 0.0005 
+  weight_decay: 0.001   
+  patience: 30
+  scheduler_patience: 7

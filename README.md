@@ -102,3 +102,16 @@ Per garantire la trasparenza scientifica del progetto, il notebook `04_explainab
 
 - Se l'esperimento originale era **Holdout**, calcolerà lo XAI su quel singolo Test Set.
 - Se l'esperimento era **LOMO / K-Fold**, entrerà automaticamente in ogni singolo fold, estrarrà i gradienti, e li **aggregherà globalmente** per generare un profilo medio robusto tra tutti i pazienti/fold.
+
+## 🧩 Architettura del Codice e Modularità (Il principio DRY)
+
+Per evitare duplicazioni (codice "spaghetti") e facilitare la manutenzione, il codice sperimentale è separato dai notebook:
+
+1. **`src/` (La Libreria)**: 
+   - Contiene file come `splits.py` (con `make_holdout_split`, `make_kfold_splits`, `make_lomo_folds`) per centralizzare la logica matematica.
+   - Contiene file come `trainer.py` e `plotting.py` (facoltativi) per spostare i complessi loop di addestramento e generazione grafici fuori dai notebook.
+2. **Notebook Specializzati (`notebooks/`)**:
+   - `03a_classification_baseline.ipynb`: Addestra modelli da zero (su IBD o TROPHY, a seconda del config YAML).
+   - `03b_classification_finetuning.ipynb`: (Opzionale) Addestra modelli caricando pesi pre-addestrati, gestendo logiche complesse come Layer Freezing o Learning Rate Schedulers specifici per il Transfer Learning.
+
+In questo modo, se vuoi cambiare dataset o passare da K-Fold a LOMO, **non crei un nuovo notebook**, ma crei semplicemente un nuovo file `.yaml`.
