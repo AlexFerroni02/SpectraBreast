@@ -1,0 +1,38 @@
+experiment_name: "SpectraMAE Pre-training Baseline"
+author: "AI Assistant"
+
+dataset:
+  name: "PreTrain"
+  path: "data/PreTrain/SUPER_PRETRAIN_500pt.mat"
+  x_key: "X"
+  # No Y_key needed for self-supervised learning
+  batch_size: 128
+
+model:
+  architecture: "Spectra_MAE"
+  n_classes: 2 # Dummy value, not used in pre-training
+  parameters:
+    sequence_length: 500 # Lunghezza della sequenza di input (dataset 500pt)
+    embedding_dim: 256 # Dimensione dell'embedding
+    encoder_depth: 4 # Numero di blocchi Transformer nell'encoder
+    encoder_heads: 8 # Numero di teste di attenzione nell'encoder
+    decoder_depth: 2 # Numero di blocchi Transformer nel decoder
+    decoder_heads: 8 # Numero di teste di attenzione nel decoder
+    mask_ratio: 0.6 # Percentuale di patch da mascherare
+    patch_size: 20 # Dimensione di ogni patch (500 / 20 = 25 patches)
+
+training:
+  optimizer: "AdamW"
+  learning_rate: 0.001
+  weight_decay: 0.05
+  epochs: 200
+  patience: 20
+  scheduler:
+    name: "CosineAnnealingLR"
+    T_max: 200
+
+split:
+  seed: 42
+  holdout:
+    test_size: 0.2
+    val_size_of_temp: 0.25 # 20% test, 20% val, 60% train

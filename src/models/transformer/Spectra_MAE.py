@@ -1,7 +1,10 @@
-import torch.nn as nn
-from model.ViT_1D import PatchEmbedding, Block
 import torch
-from model.ViT_1D import get_1d_sincos_pos_embed_from_grid
+import torch.nn as nn
+from src.models.transformer.ViT_1D import (
+    PatchEmbedding,
+    Block,
+    get_1d_sincos_pos_embed_from_grid,
+)
 
 
 class MaskedAutoencoderViT(nn.Module):
@@ -185,6 +188,43 @@ class MaskedAutoencoderViT(nn.Module):
         loss = self.forward_loss(spectra, pred, mask)
 
         return loss, pred, mask
+
+
+class Spectra_MAE(MaskedAutoencoderViT):
+    def __init__(
+        self,
+        sequence_length=1738,
+        patch_size=19,
+        embedding_dim=256,
+        encoder_depth=4,
+        encoder_heads=8,
+        decoder_depth=2,
+        decoder_heads=8,
+        mask_ratio=0.6,
+        mlp_dim=None,
+        norm_pix_loss=False,
+    ):
+        if sequence_length % patch_size != 0:
+            raise ValueError(
+                f"sequence_length ({sequence_length}) must be divisible by patch_size ({patch_size})."
+            )
+        super().__init__(
+            spectra_size=sequence_length,
+            patch_size=patch_size,
+            encoder_dim=embedding_dim,
+            depth=encoder_depth,
+            num_heads=encoder_heads,
+            decoder_embed_dim=embedding_dim,
+            decoder_depth=decoder_depth,
+            decoder_num_heads=decoder_heads,
+            dim_mlp=mlp_dim or embedding_dim,
+            norm_pix_loss=norm_pix_loss,
+        )
+        self.mask_ratio = float(mask_ratio)
+
+    def forward(self, spectra, mask_ratio=None):
+        use_mask_ratio = self.mask_ratio if mask_ratio is None else mask_ratio
+        return super().forward(spectra, mask_ratio=use_mask_ratio)
     
 
 def spectraMAE_patch100_dim256_h8(**kwargs):
