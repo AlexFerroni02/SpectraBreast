@@ -1,0 +1,14 @@
+pretrain:
+   pretrained_path: "/path/to/pretrained.pth"
+
+training:
+   mode: "finetune"        # scratch | linear_probe | finetune
+   lp_epochs: 10
+   ft_epochs: 40
+   lr_lp: 1e-3
+   lr_ft: 1e-4
+   weight_decay: 1e-4
+   patience: 15
+   scheduler_patience: 7
+   grad_clip: 1.0
+   head_attr: "classifier"
