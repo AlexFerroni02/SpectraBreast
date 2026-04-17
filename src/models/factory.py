@@ -17,9 +17,37 @@ def build_model_from_config(config: Dict[str, Any], device):
         except ImportError:
             from src.models.cnn.raman_cnn import RamanCNN
         input_length = int(config["model"].get("input_length", 500))
-        n_classes = int(config["model"].get("n_classes", 2))
-        return RamanCNN(input_length=input_length, n_classes=n_classes).to(device)
-    
+        n_classes    = int(config["model"].get("n_classes", 2))
+        num_layers   = int(config["model"].get("num_layers",   3))
+        base_filters = int(config["model"].get("base_filters", 16))
+        dropout      = float(config["model"].get("dropout",    0.5))
+        kernel_size  = int(config["model"].get("kernel_size",  7))
+        return RamanCNN(
+            input_length=input_length,
+            n_classes=n_classes,
+            num_layers=num_layers,
+            base_filters=base_filters,
+            dropout=dropout,
+            kernel_size=kernel_size,
+        ).to(device)
+
+    elif model_arch in ("ViT_1D", "ViT"):
+        # Importiamo la classe ViT dal file ViT_1D.py
+        from src.models.transformer.ViT_1D import ViT 
+        
+        # Mappiamo i parametri del tuo YAML ai nomi esatti richiesti dalla tua classe ViT
+        return ViT(
+            spectra_size=int(config["model"].get("input_length", 500)),
+            patch_size=int(config["model"].get("patch_size", 20)),
+            num_classes=int(config["model"].get("n_classes", 2)),
+            dim=int(config["model"].get("embedding_dim", 256)),
+            depth=int(config["model"].get("depth", 4)),
+            heads=int(config["model"].get("heads", 8)),
+            dim_mlp=int(config["model"].get("embedding_dim", 256) ), # Di default l'MLP è 4x la dimensione
+            dropout=float(config["model"].get("dropout", 0.1)),
+            emb_dropout=float(config["model"].get("dropout", 0.1)), # Passiamo lo stesso dropout per sicurezza
+            sd=0.1 # Parametro di stochastic depth richiesto dalla tua classe
+        ).to(device)
     # --- 2. MODELLO SPECTRA MAE (PRE-TRAINING) ---
     elif model_arch == "Spectra_MAE":
         from src.models.transformer.Spectra_MAE import Spectra_MAE

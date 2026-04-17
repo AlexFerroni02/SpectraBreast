@@ -1,0 +1,141 @@
+The following modules were not unloaded:
+  (Use "module --force purge" to unload all):
+
+  1) apps/2021
+WARNING: You are using pip version 21.1.1; however, version 26.0.1 is available.
+You should consider upgrading via the '/media/apps/avx512-2021/software/Python/3.9.5-GCCcore-10.3.0/bin/python3 -m pip install --upgrade pip' command.
+[I 2026-04-17 15:48:25,756] Using an existing study with name 'study_cnn_ibd_pretrainFalse_arch' instead of creating a new one.
+[I 2026-04-17 15:48:33,943] Trial 5 finished with value: 0.4278288942695722 and parameters: {'lr_finetune': 0.00012014311150531189, 'epochs_finetune': 48, 'weight_decay': 0.03587247145881959, 'batch_size': 32, 'patience': 6, 'scheduler_patience': 8, 'scheduler_factor': 0.3276381225876138, 'pos_weight_multiplier': 1.8888136886897353, 'num_layers': 4, 'base_filters': 32, 'dropout': 0.212679554847507, 'kernel_size': 7}. Best is trial 3 with value: 0.6410693920439048.
+[I 2026-04-17 15:48:35,112] Trial 6 finished with value: 0.4270537743128542 and parameters: {'lr_finetune': 0.00013803851684749652, 'epochs_finetune': 79, 'weight_decay': 0.0001863452810281017, 'batch_size': 64, 'patience': 6, 'scheduler_patience': 8, 'scheduler_factor': 0.8432041832909881, 'pos_weight_multiplier': 2.450876756087271, 'num_layers': 4, 'base_filters': 32, 'dropout': 0.5730644543410139, 'kernel_size': 5}. Best is trial 3 with value: 0.6410693920439048.
+[I 2026-04-17 15:48:36,140] Trial 7 pruned. 
+[I 2026-04-17 15:48:36,498] Trial 8 pruned. 
+[I 2026-04-17 15:48:38,405] Trial 9 finished with value: 0.48062363593453894 and parameters: {'lr_finetune': 1.2942960458478636e-05, 'epochs_finetune': 76, 'weight_decay': 0.0002503939454796113, 'batch_size': 64, 'patience': 13, 'scheduler_patience': 2, 'scheduler_factor': 0.4806600962015193, 'pos_weight_multiplier': 1.3469443833373915, 'num_layers': 3, 'base_filters': 64, 'dropout': 0.29662226273755377, 'kernel_size': 7}. Best is trial 3 with value: 0.6410693920439048.
+[I 2026-04-17 15:48:41,215] Trial 10 finished with value: 0.8298078376987584 and parameters: {'lr_finetune': 0.0008007507347616184, 'epochs_finetune': 31, 'weight_decay': 0.09812160925857207, 'batch_size': 64, 'patience': 19, 'scheduler_patience': 7, 'scheduler_factor': 0.1266267915129143, 'pos_weight_multiplier': 2.9818909581504776, 'num_layers': 2, 'base_filters': 64, 'dropout': 0.32513545493633306, 'kernel_size': 5}. Best is trial 10 with value: 0.8298078376987584.
+[I 2026-04-17 15:48:43,988] Trial 11 finished with value: 0.8189345726124465 and parameters: {'lr_finetune': 0.0013519084515699492, 'epochs_finetune': 31, 'weight_decay': 0.08638233609801117, 'batch_size': 64, 'patience': 19, 'scheduler_patience': 7, 'scheduler_factor': 0.16192150658169915, 'pos_weight_multiplier': 2.9789829659654363, 'num_layers': 2, 'base_filters': 64, 'dropout': 0.32108184257334094, 'kernel_size': 5}. Best is trial 10 with value: 0.8298078376987584.
+[I 2026-04-17 15:48:46,860] Trial 12 finished with value: 0.8301466938245678 and parameters: {'lr_finetune': 0.0010168194782936436, 'epochs_finetune': 32, 'weight_decay': 0.019534997841859005, 'batch_size': 64, 'patience': 20, 'scheduler_patience': 7, 'scheduler_factor': 0.11953426589537768, 'pos_weight_multiplier': 2.961164484928146, 'num_layers': 2, 'base_filters': 64, 'dropout': 0.3186582337680203, 'kernel_size': 5}. Best is trial 12 with value: 0.8301466938245678.
+[I 2026-04-17 15:48:49,652] Trial 13 finished with value: 0.84134034045051 and parameters: {'lr_finetune': 0.0009010667722315995, 'epochs_finetune': 31, 'weight_decay': 0.016662438251220758, 'batch_size': 64, 'patience': 20, 'scheduler_patience': 7, 'scheduler_factor': 0.4522489209111552, 'pos_weight_multiplier': 2.5369826422124233, 'num_layers': 2, 'base_filters': 64, 'dropout': 0.3247814272354721, 'kernel_size': 5}. Best is trial 13 with value: 0.84134034045051.
+[I 2026-04-17 15:48:50,492] Trial 14 pruned. 
+[I 2026-04-17 15:48:53,420] Trial 15 finished with value: 0.7270378619170531 and parameters: {'lr_finetune': 0.0015786880253561089, 'epochs_finetune': 39, 'weight_decay': 0.013020863554379758, 'batch_size': 64, 'patience': 20, 'scheduler_patience': 7, 'scheduler_factor': 0.6225300259237319, 'pos_weight_multiplier': 2.641307847709626, 'num_layers': 2, 'base_filters': 16, 'dropout': 0.3797327763617005, 'kernel_size': 5}. Best is trial 13 with value: 0.84134034045051.
+[I 2026-04-17 15:48:55,976] Trial 16 finished with value: 0.6991900517502256 and parameters: {'lr_finetune': 0.0006011497894751375, 'epochs_finetune': 38, 'weight_decay': 0.0018099719554129441, 'batch_size': 64, 'patience': 17, 'scheduler_patience': 6, 'scheduler_factor': 0.3882618735412518, 'pos_weight_multiplier': 1.5283578638631115, 'num_layers': 2, 'base_filters': 64, 'dropout': 0.36901067442340946, 'kernel_size': 5}. Best is trial 13 with value: 0.84134034045051.
+[I 2026-04-17 15:48:58,632] Trial 17 finished with value: 0.8414496859687077 and parameters: {'lr_finetune': 0.0017174379510448594, 'epochs_finetune': 30, 'weight_decay': 0.012882525109173535, 'batch_size': 64, 'patience': 17, 'scheduler_patience': 6, 'scheduler_factor': 0.7619030785346808, 'pos_weight_multiplier': 2.2590964821553676, 'num_layers': 2, 'base_filters': 64, 'dropout': 0.2735972703711246, 'kernel_size': 5}. Best is trial 17 with value: 0.8414496859687077.
+[I 2026-04-17 15:49:03,464] Trial 18 finished with value: 0.977794448612153 and parameters: {'lr_finetune': 0.002696604611524235, 'epochs_finetune': 43, 'weight_decay': 0.009024670533733922, 'batch_size': 32, 'patience': 17, 'scheduler_patience': 6, 'scheduler_factor': 0.7625027969395413, 'pos_weight_multiplier': 2.240686890732773, 'num_layers': 2, 'base_filters': 64, 'dropout': 0.2670778984244104, 'kernel_size': 3}. Best is trial 18 with value: 0.977794448612153.
+[I 2026-04-17 15:49:08,236] Trial 19 finished with value: 0.977794448612153 and parameters: {'lr_finetune': 0.002434712226637338, 'epochs_finetune': 44, 'weight_decay': 0.0018330463821378338, 'batch_size': 32, 'patience': 16, 'scheduler_patience': 6, 'scheduler_factor': 0.7850880187723895, 'pos_weight_multiplier': 2.2159788945807306, 'num_layers': 2, 'base_filters': 16, 'dropout': 0.20165007706157376, 'kernel_size': 3}. Best is trial 18 with value: 0.977794448612153.
+[I 2026-04-17 15:49:13,285] Trial 20 finished with value: 0.977794448612153 and parameters: {'lr_finetune': 0.002428724832727554, 'epochs_finetune': 60, 'weight_decay': 0.0015816884073472752, 'batch_size': 32, 'patience': 15, 'scheduler_patience': 4, 'scheduler_factor': 0.7968471684192697, 'pos_weight_multiplier': 1.6819841597287577, 'num_layers': 2, 'base_filters': 16, 'dropout': 0.20698638464165997, 'kernel_size': 3}. Best is trial 18 with value: 0.977794448612153.
+[I 2026-04-17 15:49:17,823] Trial 21 finished with value: 0.977794448612153 and parameters: {'lr_finetune': 0.0025843811440624163, 'epochs_finetune': 67, 'weight_decay': 0.001391201153612735, 'batch_size': 32, 'patience': 15, 'scheduler_patience': 4, 'scheduler_factor': 0.7646192192498019, 'pos_weight_multiplier': 1.655495288719761, 'num_layers': 2, 'base_filters': 16, 'dropout': 0.20087488215046356, 'kernel_size': 3}. Best is trial 18 with value: 0.977794448612153.
+[I 2026-04-17 15:49:22,298] Trial 22 finished with value: 0.977794448612153 and parameters: {'lr_finetune': 0.002228103425952175, 'epochs_finetune': 44, 'weight_decay': 0.000949814188084276, 'batch_size': 32, 'patience': 16, 'scheduler_patience': 5, 'scheduler_factor': 0.7664077058883976, 'pos_weight_multiplier': 2.1298761683005183, 'num_layers': 2, 'base_filters': 16, 'dropout': 0.2409386416496424, 'kernel_size': 3}. Best is trial 18 with value: 0.977794448612153.
+[I 2026-04-17 15:49:26,059] Trial 23 finished with value: 0.9054510996170094 and parameters: {'lr_finetune': 0.0004908962533853083, 'epochs_finetune': 57, 'weight_decay': 0.002702836589324495, 'batch_size': 32, 'patience': 12, 'scheduler_patience': 5, 'scheduler_factor': 0.5835068915134565, 'pos_weight_multiplier': 1.7707056372181045, 'num_layers': 2, 'base_filters': 16, 'dropout': 0.23864872151805913, 'kernel_size': 3}. Best is trial 18 with value: 0.977794448612153.
+[I 2026-04-17 15:49:26,609] Trial 24 pruned. 
+[I 2026-04-17 15:49:31,581] Trial 25 finished with value: 0.977794448612153 and parameters: {'lr_finetune': 0.0025733988740435127, 'epochs_finetune': 51, 'weight_decay': 0.0008635314626876568, 'batch_size': 32, 'patience': 18, 'scheduler_patience': 6, 'scheduler_factor': 0.8335707722685611, 'pos_weight_multiplier': 2.24442879309666, 'num_layers': 2, 'base_filters': 16, 'dropout': 0.27353601024677665, 'kernel_size': 3}. Best is trial 18 with value: 0.977794448612153.
+[I 2026-04-17 15:49:37,336] Trial 26 finished with value: 0.9314102737590602 and parameters: {'lr_finetune': 4.591554435234991e-05, 'epochs_finetune': 70, 'weight_decay': 0.0026184160309609948, 'batch_size': 32, 'patience': 15, 'scheduler_patience': 3, 'scheduler_factor': 0.8997983143256815, 'pos_weight_multiplier': 1.8886812538336708, 'num_layers': 2, 'base_filters': 16, 'dropout': 0.23109371676802637, 'kernel_size': 3}. Best is trial 18 with value: 0.977794448612153.
+[I 2026-04-17 15:49:40,939] Trial 27 finished with value: 0.7380497666789578 and parameters: {'lr_finetune': 0.00032544656914594225, 'epochs_finetune': 43, 'weight_decay': 0.007490264487549353, 'batch_size': 32, 'patience': 13, 'scheduler_patience': 4, 'scheduler_factor': 0.5770771660131625, 'pos_weight_multiplier': 2.060149795393596, 'num_layers': 3, 'base_filters': 16, 'dropout': 0.27244031804536717, 'kernel_size': 3}. Best is trial 18 with value: 0.977794448612153.
+[I 2026-04-17 15:49:45,578] Trial 28 finished with value: 0.9723339316972102 and parameters: {'lr_finetune': 0.0016511709402546218, 'epochs_finetune': 56, 'weight_decay': 0.0017329863621827761, 'batch_size': 32, 'patience': 16, 'scheduler_patience': 6, 'scheduler_factor': 0.6997071067002156, 'pos_weight_multiplier': 1.2719588232197836, 'num_layers': 2, 'base_filters': 16, 'dropout': 0.2575777847673397, 'kernel_size': 3}. Best is trial 18 with value: 0.977794448612153.
+[I 2026-04-17 15:49:45,977] Trial 29 pruned. 
+[I 2026-04-17 15:49:50,754] Trial 30 finished with value: 0.977794448612153 and parameters: {'lr_finetune': 0.0005866886973268478, 'epochs_finetune': 61, 'weight_decay': 0.0007152429859463823, 'batch_size': 32, 'patience': 18, 'scheduler_patience': 4, 'scheduler_factor': 0.5622148767049308, 'pos_weight_multiplier': 2.7049086382672094, 'num_layers': 2, 'base_filters': 32, 'dropout': 0.3638511782766592, 'kernel_size': 3}. Best is trial 18 with value: 0.977794448612153.
+[I 2026-04-17 15:49:55,410] Trial 31 finished with value: 0.977794448612153 and parameters: {'lr_finetune': 0.002951550290451003, 'epochs_finetune': 68, 'weight_decay': 0.0013696196568059585, 'batch_size': 32, 'patience': 15, 'scheduler_patience': 4, 'scheduler_factor': 0.782998222700533, 'pos_weight_multiplier': 1.695300410993758, 'num_layers': 2, 'base_filters': 16, 'dropout': 0.204670879156491, 'kernel_size': 3}. Best is trial 18 with value: 0.977794448612153.
+[I 2026-04-17 15:50:00,232] Trial 32 finished with value: 0.977794448612153 and parameters: {'lr_finetune': 0.0042174178815792395, 'epochs_finetune': 65, 'weight_decay': 0.003611362560770562, 'batch_size': 32, 'patience': 14, 'scheduler_patience': 3, 'scheduler_factor': 0.7012460996523975, 'pos_weight_multiplier': 1.5901652849081744, 'num_layers': 2, 'base_filters': 16, 'dropout': 0.22040986618956873, 'kernel_size': 3}. Best is trial 18 with value: 0.977794448612153.
+[I 2026-04-17 15:50:04,342] Trial 33 finished with value: 0.8290014458030761 and parameters: {'lr_finetune': 0.002269479517866336, 'epochs_finetune': 73, 'weight_decay': 0.001259489759972052, 'batch_size': 32, 'patience': 14, 'scheduler_patience': 5, 'scheduler_factor': 0.8677186222488003, 'pos_weight_multiplier': 1.0912867732707427, 'num_layers': 2, 'base_filters': 16, 'dropout': 0.20368445101234203, 'kernel_size': 3}. Best is trial 18 with value: 0.977794448612153.
+[I 2026-04-17 15:50:08,791] Trial 34 finished with value: 0.8579221076455553 and parameters: {'lr_finetune': 0.0012857793429731845, 'epochs_finetune': 36, 'weight_decay': 0.0005130829659129563, 'batch_size': 32, 'patience': 16, 'scheduler_patience': 4, 'scheduler_factor': 0.801531938361065, 'pos_weight_multiplier': 0.5583731790903912, 'num_layers': 3, 'base_filters': 16, 'dropout': 0.2320728366279798, 'kernel_size': 3}. Best is trial 18 with value: 0.977794448612153.
+[I 2026-04-17 15:50:13,330] Trial 35 finished with value: 0.977794448612153 and parameters: {'lr_finetune': 0.002949654140279732, 'epochs_finetune': 64, 'weight_decay': 0.002054890036610648, 'batch_size': 32, 'patience': 15, 'scheduler_patience': 4, 'scheduler_factor': 0.7282559129350936, 'pos_weight_multiplier': 0.8848319407750527, 'num_layers': 2, 'base_filters': 16, 'dropout': 0.4573013676591881, 'kernel_size': 3}. Best is trial 18 with value: 0.977794448612153.
+[I 2026-04-17 15:50:18,516] Trial 36 finished with value: 0.977794448612153 and parameters: {'lr_finetune': 0.004429020292635659, 'epochs_finetune': 48, 'weight_decay': 0.0036826203467554565, 'batch_size': 32, 'patience': 18, 'scheduler_patience': 6, 'scheduler_factor': 0.675628409944962, 'pos_weight_multiplier': 2.2122343555209407, 'num_layers': 2, 'base_filters': 32, 'dropout': 0.2548978892249614, 'kernel_size': 7}. Best is trial 18 with value: 0.977794448612153.
+[I 2026-04-17 15:50:23,070] Trial 37 finished with value: 0.8579221076455553 and parameters: {'lr_finetune': 0.001976773076303348, 'epochs_finetune': 42, 'weight_decay': 0.008214756921695912, 'batch_size': 32, 'patience': 14, 'scheduler_patience': 5, 'scheduler_factor': 0.8599260508646955, 'pos_weight_multiplier': 1.8425139675680826, 'num_layers': 3, 'base_filters': 16, 'dropout': 0.21974725276028784, 'kernel_size': 3}. Best is trial 18 with value: 0.977794448612153.
+[I 2026-04-17 15:50:23,765] Trial 38 pruned. 
+[I 2026-04-17 15:50:28,678] Trial 39 finished with value: 0.977794448612153 and parameters: {'lr_finetune': 0.00020784523316229184, 'epochs_finetune': 57, 'weight_decay': 0.0003294946049229754, 'batch_size': 32, 'patience': 15, 'scheduler_patience': 3, 'scheduler_factor': 0.7460038023652387, 'pos_weight_multiplier': 2.3374178756964126, 'num_layers': 2, 'base_filters': 16, 'dropout': 0.20069182829314564, 'kernel_size': 3}. Best is trial 18 with value: 0.977794448612153.
+[I 2026-04-17 15:50:29,373] Trial 40 pruned. 
+[I 2026-04-17 15:50:33,850] Trial 41 finished with value: 0.977794448612153 and parameters: {'lr_finetune': 0.002374526367615295, 'epochs_finetune': 45, 'weight_decay': 0.0007030727035617373, 'batch_size': 32, 'patience': 16, 'scheduler_patience': 5, 'scheduler_factor': 0.7792088924160333, 'pos_weight_multiplier': 2.0607061450863826, 'num_layers': 2, 'base_filters': 16, 'dropout': 0.2379553056952977, 'kernel_size': 3}. Best is trial 18 with value: 0.977794448612153.
+[I 2026-04-17 15:50:38,693] Trial 42 finished with value: 0.977794448612153 and parameters: {'lr_finetune': 0.0033653000924068104, 'epochs_finetune': 45, 'weight_decay': 0.0012307959947582472, 'batch_size': 32, 'patience': 17, 'scheduler_patience': 6, 'scheduler_factor': 0.7021349794844217, 'pos_weight_multiplier': 2.141801124624083, 'num_layers': 2, 'base_filters': 16, 'dropout': 0.25332660859506956, 'kernel_size': 3}. Best is trial 18 with value: 0.977794448612153.
+[I 2026-04-17 15:50:43,250] Trial 43 finished with value: 0.977794448612153 and parameters: {'lr_finetune': 0.0012360878540036385, 'epochs_finetune': 60, 'weight_decay': 0.002023089380636383, 'batch_size': 32, 'patience': 16, 'scheduler_patience': 4, 'scheduler_factor': 0.8638848314706775, 'pos_weight_multiplier': 2.3769503601783004, 'num_layers': 2, 'base_filters': 16, 'dropout': 0.21868069301379817, 'kernel_size': 3}. Best is trial 18 with value: 0.977794448612153.
+Traceback (most recent call last):
+  File "/home/y222/y222446/.local/lib/python3.9/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/y222/y222446/.local/lib/python3.9/site-packages/sqlalchemy/engine/default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: attempt to write a readonly database
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/y222/y222446/.local/lib/python3.9/site-packages/optuna/storages/_rdb/storage.py", line 80, in _create_scoped_session
+    session.commit()
+  File "/home/y222/y222446/.local/lib/python3.9/site-packages/sqlalchemy/orm/session.py", line 2030, in commit
+    trans.commit(_to_root=True)
+  File "<string>", line 2, in commit
+  File "/home/y222/y222446/.local/lib/python3.9/site-packages/sqlalchemy/orm/state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "/home/y222/y222446/.local/lib/python3.9/site-packages/sqlalchemy/orm/session.py", line 1311, in commit
+    self._prepare_impl()
+  File "<string>", line 2, in _prepare_impl
+  File "/home/y222/y222446/.local/lib/python3.9/site-packages/sqlalchemy/orm/state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "/home/y222/y222446/.local/lib/python3.9/site-packages/sqlalchemy/orm/session.py", line 1286, in _prepare_impl
+    self.session.flush()
+  File "/home/y222/y222446/.local/lib/python3.9/site-packages/sqlalchemy/orm/session.py", line 4331, in flush
+    self._flush(objects)
+  File "/home/y222/y222446/.local/lib/python3.9/site-packages/sqlalchemy/orm/session.py", line 4467, in _flush
+    transaction.rollback(_capture_exception=True)
+  File "/home/y222/y222446/.local/lib/python3.9/site-packages/sqlalchemy/util/langhelpers.py", line 121, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/y222/y222446/.local/lib/python3.9/site-packages/sqlalchemy/orm/session.py", line 4427, in _flush
+    flush_context.execute()
+  File "/home/y222/y222446/.local/lib/python3.9/site-packages/sqlalchemy/orm/unitofwork.py", line 466, in execute
+    rec.execute(self)
+  File "/home/y222/y222446/.local/lib/python3.9/site-packages/sqlalchemy/orm/unitofwork.py", line 642, in execute
+    util.preloaded.orm_persistence.save_obj(
+  File "/home/y222/y222446/.local/lib/python3.9/site-packages/sqlalchemy/orm/persistence.py", line 85, in save_obj
+    _emit_update_statements(
+  File "/home/y222/y222446/.local/lib/python3.9/site-packages/sqlalchemy/orm/persistence.py", line 912, in _emit_update_statements
+    c = connection.execute(
+  File "/home/y222/y222446/.local/lib/python3.9/site-packages/sqlalchemy/engine/base.py", line 1419, in execute
+    return meth(
+  File "/home/y222/y222446/.local/lib/python3.9/site-packages/sqlalchemy/sql/elements.py", line 527, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "/home/y222/y222446/.local/lib/python3.9/site-packages/sqlalchemy/engine/base.py", line 1641, in _execute_clauseelement
+    ret = self._execute_context(
+  File "/home/y222/y222446/.local/lib/python3.9/site-packages/sqlalchemy/engine/base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+  File "/home/y222/y222446/.local/lib/python3.9/site-packages/sqlalchemy/engine/base.py", line 1986, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "/home/y222/y222446/.local/lib/python3.9/site-packages/sqlalchemy/engine/base.py", line 2363, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/home/y222/y222446/.local/lib/python3.9/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/y222/y222446/.local/lib/python3.9/site-packages/sqlalchemy/engine/default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) attempt to write a readonly database
+[SQL: UPDATE trials SET state=?, datetime_complete=? WHERE trials.trial_id = ?]
+[parameters: ('FAIL', '2026-04-17 15:50:45.973093', 45)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/y222/y222446/.local/lib/python3.9/site-packages/optuna/study/_optimize.py", line 218, in _run_trial
+    updated_state, values, warning_message = _tell_with_warning(
+  File "/home/y222/y222446/.local/lib/python3.9/site-packages/optuna/study/_tell.py", line 174, in _tell_with_warning
+    study._storage.set_trial_state_values(frozen_trial._trial_id, state, values)
+  File "/home/y222/y222446/.local/lib/python3.9/site-packages/optuna/storages/_cached_storage.py", line 194, in set_trial_state_values
+    return self._backend.set_trial_state_values(trial_id, state=state, values=values)
+  File "/home/y222/y222446/.local/lib/python3.9/site-packages/optuna/storages/_rdb/storage.py", line 674, in set_trial_state_values
+    trial.datetime_complete = datetime.now()
+  File "/media/apps/avx512-2021/software/Python/3.9.5-GCCcore-10.3.0/lib/python3.9/contextlib.py", line 124, in __exit__
+    next(self.gen)
+  File "/home/y222/y222446/.local/lib/python3.9/site-packages/optuna/storages/_rdb/storage.py", line 98, in _create_scoped_session
+    raise optuna.exceptions.StorageInternalError(message) from e
+optuna.exceptions.StorageInternalError: An exception is raised during the commit. This typically happens due to invalid data in the commit, e.g. exceeding max length. 
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/media/beegfs/home/y222/y222446/SpectraBreast/src/tuning/optuna_study.py", line 243, in <module>
+    run_optuna_study()
+  File "/media/beegfs/home/y222/y222446/SpectraBreast/src/tuning/optuna_study.py", line 236, in run_optuna_study
+    study.optimize(objective, n_trials=args.n_trials)
+  File "/home/y222/y222446/.local/lib/python3.9/site-packages/optuna/study/study.py", line 490, in optimize
+    _optimize(
+  File "/home/y222/y222446/.local/lib/python3.9/site-packages/optuna/study/_optimize.py", line 68, in _optimize
+    _optimize_sequential(
+  File "/home/y222/y222446/.local/lib/python3.9/site-packages/optuna/study/_optimize.py", line 165, in _optimize_sequential
+    frozen_trial_id = _run_trial(study, func, catch)
+  File "/home/y222/y222446/.local/lib/python3.9/site-packages/optuna/study/_optimize.py", line 256, in _run_trial
+    assert False, "Should not reach."
+AssertionError: Should not reach.
+srun: error: r2n5: task 0: Exited with exit code 1

@@ -1,0 +1,29 @@
+experiment_name: "exp_03_cnn_optuna_final"
+dataset:
+  name: "IBD"
+  path: "data/IBD/Processed/IBD_Dataset_500pt.mat"
+  batch_size: 32
+
+split:
+  scheme: "kfold"
+  n_splits: 5
+  val_size: 0.20
+  seed: 42
+
+model:
+  architecture: "RamanCNN"
+  input_length: 500
+  n_classes: 2
+  num_layers: 2
+  base_filters: 16
+  kernel_size: 3
+  dropout: 0.4705
+
+training:
+  epochs: 43
+  learning_rate: 0.00027724
+  weight_decay: 0.0051366
+  patience: 19
+  scheduler_patience: 4
+  scheduler_factor: 0.8527
+  pos_weight_multiplier: 2.7885

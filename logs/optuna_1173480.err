@@ -1,0 +1,12 @@
+The following modules were not unloaded:
+  (Use "module --force purge" to unload all):
+
+  1) apps/2021
+WARNING: You are using pip version 21.1.1; however, version 26.0.1 is available.
+You should consider upgrading via the '/media/apps/avx512-2021/software/Python/3.9.5-GCCcore-10.3.0/bin/python3 -m pip install --upgrade pip' command.
+[I 2026-04-17 15:28:20,710] A new study created in RDB with name: study_cnn_ibd_pretrainFalse_arch
+[I 2026-04-17 15:28:28,713] Trial 0 finished with value: 0.3053455019556714 and parameters: {'lr': 5.3182013164606646e-05, 'weight_decay': 0.06082739420017334, 'batch_size': 32, 'num_layers': 4, 'base_filters': 64, 'dropout': 0.5406619048093244, 'kernel_size': 3}. Best is trial 0 with value: 0.3053455019556714.
+[I 2026-04-17 15:28:29,484] Trial 1 finished with value: 0.3559973924380704 and parameters: {'lr': 0.0003262758575058579, 'weight_decay': 0.032378156453729934, 'batch_size': 128, 'num_layers': 2, 'base_filters': 32, 'dropout': 0.35331069056288544, 'kernel_size': 5}. Best is trial 1 with value: 0.3559973924380704.
+[I 2026-04-17 15:28:30,359] Trial 2 finished with value: 0.3559973924380704 and parameters: {'lr': 2.384504280466767e-05, 'weight_decay': 0.03698332874226416, 'batch_size': 128, 'num_layers': 3, 'base_filters': 32, 'dropout': 0.31968299380532705, 'kernel_size': 3}. Best is trial 1 with value: 0.3559973924380704.
+[I 2026-04-17 15:28:31,348] Trial 3 finished with value: 0.3559973924380704 and parameters: {'lr': 1.1026041994325254e-05, 'weight_decay': 0.00478361801887355, 'batch_size': 64, 'num_layers': 4, 'base_filters': 32, 'dropout': 0.337082473855879, 'kernel_size': 5}. Best is trial 1 with value: 0.3559973924380704.
+[I 2026-04-17 15:28:32,183] Trial 4 finished with value: 0.3053455019556714 and parameters: {'lr': 0.0005875372770688926, 'weight_decay': 0.023382961533262546, 'batch_size': 64, 'num_layers': 3, 'base_filters': 16, 'dropout': 0.3993980877144847, 'kernel_size': 7}. Best is trial 1 with value: 0.3559973924380704.

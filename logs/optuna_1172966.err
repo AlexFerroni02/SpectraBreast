@@ -1,0 +1,9 @@
+The following modules were not unloaded:
+  (Use "module --force purge" to unload all):
+
+  1) apps/2021
+WARNING: You are using pip version 21.1.1; however, version 26.0.1 is available.
+You should consider upgrading via the '/media/apps/avx512-2021/software/Python/3.9.5-GCCcore-10.3.0/bin/python3 -m pip install --upgrade pip' command.
+[I 2026-04-17 15:05:05,771] Using an existing study with name 'study_cnn_ibd_pretrainFalse' instead of creating a new one.
+[I 2026-04-17 15:05:13,311] Trial 2 finished with value: 0.3728813559322034 and parameters: {'lr': 3.079086893584524e-05, 'weight_decay': 0.027455976069146355, 'batch_size': 64}. Best is trial 2 with value: 0.3728813559322034.
+[I 2026-04-17 15:05:14,400] Trial 3 finished with value: 0.3559973924380704 and parameters: {'lr': 3.4076375970803925e-05, 'weight_decay': 0.0007881509480607097, 'batch_size': 32}. Best is trial 2 with value: 0.3728813559322034.

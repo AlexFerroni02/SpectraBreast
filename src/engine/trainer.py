@@ -26,6 +26,8 @@ def train_one(model, train_loader, val_loader, y_train_fold, config, device):
     weight_decay = float(config["training"].get("weight_decay", 0.0))
     patience = int(config["training"].get("patience", 50))
     scheduler_patience = int(config["training"].get("scheduler_patience", 7))
+    scheduler_factor = float(config["training"].get("scheduler_factor", 0.5))
+    pos_weight_multiplier = float(config["training"].get("pos_weight_multiplier", 1.0))
     opt_type = config["training"].get("optimizer", "AdamW")
 
     if opt_type == "AdamW":
@@ -39,9 +41,10 @@ def train_one(model, train_loader, val_loader, y_train_fold, config, device):
     n_ibd = (y_train_fold == 1).sum()
     weights = torch.tensor([1.0/n_sano if n_sano>0 else 0, 1.0/n_ibd if n_ibd>0 else 0], dtype=torch.float, device=device)
     weights = weights / weights.sum() * 2.0
+    weights[1] *= pos_weight_multiplier
     criterion = torch.nn.CrossEntropyLoss(weight=weights)
     
-    scheduler = ReduceLROnPlateau(optimizer, mode="max", factor=0.5, patience=scheduler_patience, verbose=True)
+    scheduler = ReduceLROnPlateau(optimizer, mode="max", factor=scheduler_factor, patience=scheduler_patience)
     
     history = {"train_loss": [], "val_loss": [], "val_f1": [], "val_acc": []}
     best_f1, best_state, epochs_no_improve = -1.0, None, 0

@@ -1,0 +1,60 @@
+experiment_name: "Hybrid CNN-Transformer IBD Fine-tuning"
+author: "AI Assistant"
+
+dataset:
+  name: "IBD"
+  # Update this path to point to your IBD .mat dataset
+  path: "data/IBD/Processed/IBD_Dataset_500pt.mat"
+  batch_size: 32
+  # Optional: explicit key names for mat file variables
+  # x_key: "X_processed"
+  # y_key: "labels_binary"
+
+model:
+  architecture: "HybridCNNTransformer"
+  input_length: 500
+  n_classes: 2
+  d_model: 64          # Must match the pretraining config if loading a checkpoint
+  nhead: 4
+  num_layers: 3
+
+# Pre-training checkpoint to load (leave null to train from scratch)
+pretrain:
+  # Set this to the .pth file saved by 02_pretraining.ipynb, e.g.:
+  # experiments/pretraining/exp_02_hybrid_mae_baseline/best_pretrained_model.pth
+  pretrained_path: null
+
+training:
+  # mode options:
+  #   "scratch"       - train from random init
+  #   "linear_probe"  - only train the classifier head (encoder frozen)
+  #   "finetune"      - LP warm-up, then unfreeze everything with lower LR
+  mode: "finetune"
+
+  # Stage 1: Linear Probe warm-up (only if mode = "finetune" or "linear_probe")
+  lp_epochs: 15
+  lr_lp: 0.001
+
+  # Stage 2: Full fine-tuning
+  ft_epochs: 100
+  lr_ft: 0.0001
+
+  weight_decay: 0.0001
+  patience: 20
+  scheduler_patience: 7
+  grad_clip: 1.0
+
+  # Attribute name of the classification head inside HybridCNNTransformer
+  head_attr: "classifier"
+
+  run_holdout: true
+
+split:
+  seed: 42
+  scheme: "kfold"  # "kfold" or "lomo"
+  holdout:
+    test_size: 0.20
+    val_size_of_temp: 0.50   # 20% test, 40% val, 40% train
+  kfold:
+    n_splits: 5
+    val_size: 0.20

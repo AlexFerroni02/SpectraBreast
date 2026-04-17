@@ -20,7 +20,9 @@ class HybridCNNTransformer(nn.Module):
         )
         
         # Calcoliamo dinamicamente la lunghezza della sequenza in uscita dalla CNN
-        seq_len_after_cnn = input_length // 8 
+        with torch.no_grad():
+            dummy = torch.zeros(1, 1, input_length)
+            seq_len_after_cnn = self.cnn(dummy).shape[-1]
         
         # 2. Transformer Components
         self.cls_token = nn.Parameter(torch.randn(1, 1, d_model) * 0.02)

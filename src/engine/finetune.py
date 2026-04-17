@@ -76,13 +76,16 @@ def train_finetune(
     weight_decay=0.0,
     patience=10,
     scheduler_patience=5,
+    scheduler_factor=0.5,
+    pos_weight_multiplier=1.0,
     grad_clip=None,
 ):
     unfreeze_all(model)
     weights = compute_class_weights(y_train, device)
+    weights[1] *= pos_weight_multiplier
     criterion = torch.nn.CrossEntropyLoss(weight=weights)
     optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=weight_decay)
-    scheduler = ReduceLROnPlateau(optimizer, mode="max", factor=0.5, patience=scheduler_patience, verbose=True)
+    scheduler = ReduceLROnPlateau(optimizer, mode="max", factor=scheduler_factor, patience=scheduler_patience)
 
     history = {"train_loss": [], "val_loss": [], "val_f1": [], "val_acc": []}
     best_f1 = -1.0
