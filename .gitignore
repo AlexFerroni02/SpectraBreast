@@ -5,6 +5,7 @@ __pycache__/
 data/
 sb_env/
 # C extensions
+experiments/
 job_*
 *.so
 .tmp.driveupload/
