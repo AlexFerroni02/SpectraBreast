@@ -16,7 +16,7 @@ export PYTHONPATH=$HOME/.local/lib/python3.9/site-packages:$PYTHONPATH
 
 # Verifica argomenti input. 
 # USO: sbatch run_classification.sh configs/classification/IBD/CNN/exp_02_cnn_kfold.yaml
-CONFIG_FILE=${1:-configs/classification/IBD/CNN/exp_01_cnn_baseline.yaml}
+CONFIG_FILE=${1:-configs/classification/IBD/CNN/exp_03_cnn_optuna_final.yaml}
 
 if [ ! -f "$CONFIG_FILE" ]; then
     echo "ERRORE: File YAML non trovato: $CONFIG_FILE"

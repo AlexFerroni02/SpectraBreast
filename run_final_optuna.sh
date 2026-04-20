@@ -34,7 +34,7 @@ echo "Pretrain: $PRETRAIN"
 echo "Trials: $TRIALS"
 echo "=========================================="
 
-srun python3 src/tuning/optuna_study.py \
+srun python3 src/tuning/optuna_final_search.py \
     --model $MODEL \
     --dataset $DATASET \
     --pretrain $PRETRAIN \

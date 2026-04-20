@@ -14,16 +14,16 @@ model:
   architecture: "RamanCNN"
   input_length: 500
   n_classes: 2
-  num_layers: 2
-  base_filters: 16
-  kernel_size: 3
-  dropout: 0.4705
+  num_layers: 4
+  base_filters: 64
+  kernel_size: 7
+  dropout: 0.4206036925137989
 
 training:
-  epochs: 43
-  learning_rate: 0.00027724
-  weight_decay: 0.0051366
-  patience: 19
-  scheduler_patience: 4
-  scheduler_factor: 0.8527
-  pos_weight_multiplier: 2.7885
+  epochs: 100
+  learning_rate: 7.684803943636052e-05
+  weight_decay: 0.05110920473821017
+  patience: 20
+  scheduler_patience: 8
+  scheduler_factor: 0.5844109197095921
+  pos_weight_multiplier: 2.5869746496000103
