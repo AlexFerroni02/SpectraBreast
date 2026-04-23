@@ -9,6 +9,7 @@ def build_model_from_config(config: Dict[str, Any], device):
     Build a classification/pretraining model from the YAML config.
     """
     model_arch = _get_model_architecture(config)
+    model_cfg = config.get("model", {})
     
     # --- 1. MODELLO BASE CNN ---
     if model_arch in ("RamanCNN", "CNN"):
@@ -16,89 +17,81 @@ def build_model_from_config(config: Dict[str, Any], device):
             from src.models.cnn.raman_cnn_01 import RamanCNN
         except ImportError:
             from src.models.cnn.raman_cnn import RamanCNN
-        input_length = int(config["model"].get("input_length", 500))
-        n_classes    = int(config["model"].get("n_classes", 2))
-        num_layers   = int(config["model"].get("num_layers",   3))
-        base_filters = int(config["model"].get("base_filters", 16))
-        dropout      = float(config["model"].get("dropout",    0.5))
-        kernel_size  = int(config["model"].get("kernel_size",  7))
         return RamanCNN(
-            input_length=input_length,
-            n_classes=n_classes,
-            num_layers=num_layers,
-            base_filters=base_filters,
-            dropout=dropout,
-            kernel_size=kernel_size,
+            input_length=int(model_cfg.get("input_length", 500)),
+            n_classes=int(model_cfg.get("n_classes", 2)),
+            num_layers=int(model_cfg.get("num_layers", 3)),
+            base_filters=int(model_cfg.get("base_filters", 16)),
+            dropout=float(model_cfg.get("dropout", 0.5)),
+            kernel_size=int(model_cfg.get("kernel_size", 7)),
         ).to(device)
 
+    # --- 2. MODELLO VIT 1D (FINE-TUNING) ---
     elif model_arch in ("ViT_1D", "ViT"):
-        # Importiamo la classe ViT dal file ViT_1D.py
         from src.models.transformer.ViT_1D import ViT 
         
-        # Mappiamo i parametri del tuo YAML ai nomi esatti richiesti dalla tua classe ViT
+        embedding_dim = int(model_cfg.get("embedding_dim", 256))
+        # Se non c'è dim_mlp nel yaml, usa in automatico 4x l'embedding
+        dim_mlp = int(model_cfg.get("dim_mlp", embedding_dim * 4))
+        dropout = float(model_cfg.get("dropout", 0.1))
+
         return ViT(
-            spectra_size=int(config["model"].get("input_length", 500)),
-            patch_size=int(config["model"].get("patch_size", 20)),
-            num_classes=int(config["model"].get("n_classes", 2)),
-            dim=int(config["model"].get("embedding_dim", 256)),
-            depth=int(config["model"].get("depth", 4)),
-            heads=int(config["model"].get("heads", 8)),
-            dim_mlp=int(config["model"].get("embedding_dim", 256) ), # Di default l'MLP è 4x la dimensione
-            dropout=float(config["model"].get("dropout", 0.1)),
-            emb_dropout=float(config["model"].get("dropout", 0.1)), # Passiamo lo stesso dropout per sicurezza
-            sd=0.1 # Parametro di stochastic depth richiesto dalla tua classe
+            spectra_size=int(model_cfg.get("input_length", 500)),
+            patch_size=int(model_cfg.get("patch_size", 20)),
+            num_classes=int(model_cfg.get("n_classes", 2)),
+            dim=embedding_dim,
+            depth=int(model_cfg.get("depth", 8)),
+            heads=int(model_cfg.get("heads", 8)),
+            dim_mlp=dim_mlp,
+            dropout=dropout,
+            emb_dropout=dropout, 
+            sd=0.1 
         ).to(device)
-    # --- 2. MODELLO SPECTRA MAE (PRE-TRAINING) ---
+
+    # --- 3. MODELLO SPECTRA MAE (PRE-TRAINING) ---
     elif model_arch == "Spectra_MAE":
         from src.models.transformer.Spectra_MAE import Spectra_MAE
-        # Assicurati che questi parametri matchino le dimensioni dei tuoi spettri!
-        params = config.get('model', {}).get('parameters', {})
+        params = model_cfg.get('parameters', {})
+        
         return Spectra_MAE(
-            sequence_length=params.get('sequence_length', 1738), # Cambia con la lunghezza vera
-            patch_size=params.get('patch_size', 19),             # Cambia con il patch size corretto
-            embedding_dim=params.get('embedding_dim', 256),
-            encoder_depth=params.get('encoder_depth', 4),
-            encoder_heads=params.get('encoder_heads', 8),
-            decoder_depth=params.get('decoder_depth', 2),
-            decoder_heads=params.get('decoder_heads', 8),
-            mask_ratio=params.get('mask_ratio', 0.6),
+            sequence_length=int(params.get('sequence_length', 500)),
+            patch_size=int(params.get('patch_size', 20)),             
+            embedding_dim=int(params.get('embedding_dim', 256)),
+            encoder_depth=int(params.get('encoder_depth', 8)),
+            encoder_heads=int(params.get('encoder_heads', 8)),
+            # 👇 ECCO LA CORREZIONE: Passiamo i parametri mancanti!
+            decoder_dim=int(params.get('decoder_dim', 128)),
+            decoder_depth=int(params.get('decoder_depth', 2)),
+            decoder_heads=int(params.get('decoder_heads', 8)),
+            mask_ratio=float(params.get('mask_ratio', 0.75)),
+            mlp_dim=int(params.get('dim_mlp', 512)), 
         ).to(device)
         
-    # --- 3. MODELLO IBRIDO (CNN + TRANSFORMER) ---
+    # --- 4. MODELLO IBRIDO (CNN + TRANSFORMER) ---
     elif model_arch == "HybridCNNTransformer":
         from src.models.hybrid.cnn_transformer import HybridCNNTransformer
-        input_length = int(config["model"].get("input_length", 500))
-        n_classes = int(config["model"].get("n_classes", 2))
         return HybridCNNTransformer(
-            input_length=input_length, 
-            n_classes=n_classes,
-            d_model=config["model"].get("d_model", 64),
-            nhead=config["model"].get("nhead", 4),
-            num_layers=config["model"].get("num_layers", 3)
+            input_length=int(model_cfg.get("input_length", 500)), 
+            n_classes=int(model_cfg.get("n_classes", 2)),
+            d_model=int(model_cfg.get("d_model", 64)),
+            nhead=int(model_cfg.get("nhead", 4)),
+            num_layers=int(model_cfg.get("num_layers", 2))
         ).to(device)
     
-    # --- 4. MODELLO IBRIDO MAE (PRE-TRAINING) ---
+    # --- 5. MODELLO IBRIDO MAE (PRE-TRAINING) ---
     elif model_arch == "HybridMAE":
         from src.models.hybrid.hybrid_mae import HybridMAE
         from src.models.hybrid.cnn_transformer import HybridCNNTransformer
         
-        # 1. Costruiamo prima l'encoder base
-        input_length = int(config["model"].get("input_length", 500))
-        n_classes = int(config["model"].get("n_classes", 2)) # Dummy per il pretrain
-        d_model = int(config["model"].get("d_model", 64))
-        nhead = int(config["model"].get("nhead", 4))
-        num_layers = int(config["model"].get("num_layers", 3))
-        
         encoder = HybridCNNTransformer(
-            input_length=input_length, 
-            n_classes=n_classes, 
-            d_model=d_model, 
-            nhead=nhead, 
-            num_layers=num_layers
+            input_length=int(model_cfg.get("input_length", 500)), 
+            n_classes=int(model_cfg.get("n_classes", 2)),
+            d_model=int(model_cfg.get("d_model", 64)), 
+            nhead=int(model_cfg.get("nhead", 4)), 
+            num_layers=int(model_cfg.get("num_layers", 2))
         )
         
-        # 2. Lo passiamo al MAE
-        mask_ratio = float(config["model"].get("mask_ratio", 0.5))
+        mask_ratio = float(model_cfg.get("mask_ratio", 0.5))
         return HybridMAE(encoder=encoder, mask_ratio=mask_ratio).to(device)
 
     raise ValueError(f"Unsupported architecture in config: {model_arch}")

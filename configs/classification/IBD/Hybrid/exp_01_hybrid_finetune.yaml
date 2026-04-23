@@ -3,10 +3,8 @@ author: "AI Assistant"
 
 dataset:
   name: "IBD"
-  # Update this path to point to your IBD .mat dataset
   path: "data/IBD/Processed/IBD_Dataset_500pt.mat"
   batch_size: 32
-  # Optional: explicit key names for mat file variables
   # x_key: "X_processed"
   # y_key: "labels_binary"
 
@@ -14,24 +12,21 @@ model:
   architecture: "HybridCNNTransformer"
   input_length: 500
   n_classes: 2
-  d_model: 64          # Must match the pretraining config if loading a checkpoint
-  nhead: 4
-  num_layers: 3
+  d_model: 64          # Must match the pretraining config
+  nhead: 4             # Must match the pretraining config
+  num_layers: 2        # Must match the pretraining config
 
-# Pre-training checkpoint to load (leave null to train from scratch)
+# Pre-training checkpoint to load
 pretrain:
-  # Set this to the .pth file saved by 02_pretraining.ipynb, e.g.:
-  # experiments/pretraining/exp_02_hybrid_mae_baseline/best_pretrained_model.pth
-  pretrained_path: null
+  # Set this to the .pth file saved by the HybridMAE pre-training
+  # After running pre-training, update this path:
+  pretrained_path: "experiments/pretraining/exp_02_hybrid_mae_baseline/best_pretrained_model.pth"
 
 training:
-  # mode options:
-  #   "scratch"       - train from random init
-  #   "linear_probe"  - only train the classifier head (encoder frozen)
-  #   "finetune"      - LP warm-up, then unfreeze everything with lower LR
+  # mode: "finetune" means LP warm-up, then unfreeze everything with lower LR
   mode: "finetune"
 
-  # Stage 1: Linear Probe warm-up (only if mode = "finetune" or "linear_probe")
+  # Stage 1: Linear Probe warm-up (encoder frozen)
   lp_epochs: 15
   lr_lp: 0.001
 
@@ -44,17 +39,17 @@ training:
   scheduler_patience: 7
   grad_clip: 1.0
 
-  # Attribute name of the classification head inside HybridCNNTransformer
+  # Name of the classification head attribute in HybridCNNTransformer
   head_attr: "classifier"
 
   run_holdout: true
 
 split:
   seed: 42
-  scheme: "kfold"  # "kfold" or "lomo"
+  scheme: "kfold"
   holdout:
     test_size: 0.20
-    val_size_of_temp: 0.50   # 20% test, 40% val, 40% train
+    val_size_of_temp: 0.50
   kfold:
     n_splits: 5
     val_size: 0.20

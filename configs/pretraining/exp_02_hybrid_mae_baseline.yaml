@@ -1,4 +1,4 @@
-experiment_name: "HybridMAE Pre-training Baseline"
+experiment_name: "HybridMAE Pre-training"
 author: "AI Assistant"
 
 dataset:
@@ -13,9 +13,9 @@ model:
   input_length: 500
   n_classes: 2         # Dummy value, not used in pre-training
   d_model: 64          # Embedding dimension for CNN and Transformer
-  nhead: 2            # Number of attention heads
-  num_layers: 1        # Number of Transformer encoder layers
-  mask_ratio: 0.75      # Fraction of CNN patches to mask
+  nhead: 4             # Number of attention heads (aligned with fine-tuning)
+  num_layers: 2        # Number of Transformer encoder layers (aligned with fine-tuning)
+  mask_ratio: 0.75     # Fraction of CNN patches to mask
 
 training:
   optimizer: "AdamW"

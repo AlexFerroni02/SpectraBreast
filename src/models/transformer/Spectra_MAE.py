@@ -198,6 +198,7 @@ class Spectra_MAE(MaskedAutoencoderViT):
         embedding_dim=256,
         encoder_depth=4,
         encoder_heads=8,
+        decoder_dim=None,         # <--- 1. AGGIUNGI QUESTO PARAMETRO
         decoder_depth=2,
         decoder_heads=8,
         mask_ratio=0.6,
@@ -214,7 +215,7 @@ class Spectra_MAE(MaskedAutoencoderViT):
             encoder_dim=embedding_dim,
             depth=encoder_depth,
             num_heads=encoder_heads,
-            decoder_embed_dim=embedding_dim,
+            decoder_embed_dim=decoder_dim or embedding_dim, # <--- 2. MODIFICA QUESTA RIGA (usa decoder_dim se c'è, altrimenti embedding_dim)
             decoder_depth=decoder_depth,
             decoder_num_heads=decoder_heads,
             dim_mlp=mlp_dim or embedding_dim,
