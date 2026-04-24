@@ -75,7 +75,8 @@ def build_model_from_config(config: Dict[str, Any], device):
             n_classes=int(model_cfg.get("n_classes", 2)),
             d_model=int(model_cfg.get("d_model", 64)),
             nhead=int(model_cfg.get("nhead", 4)),
-            num_layers=int(model_cfg.get("num_layers", 2))
+            num_layers=int(model_cfg.get("num_layers", 2)),
+            dropout=float(model_cfg.get("dropout", 0.1)),
         ).to(device)
     
     # --- 5. MODELLO IBRIDO MAE (PRE-TRAINING) ---
@@ -88,7 +89,8 @@ def build_model_from_config(config: Dict[str, Any], device):
             n_classes=int(model_cfg.get("n_classes", 2)),
             d_model=int(model_cfg.get("d_model", 64)), 
             nhead=int(model_cfg.get("nhead", 4)), 
-            num_layers=int(model_cfg.get("num_layers", 2))
+            num_layers=int(model_cfg.get("num_layers", 2)),
+            dropout=float(model_cfg.get("dropout", 0.1)),
         )
         
         mask_ratio = float(model_cfg.get("mask_ratio", 0.5))

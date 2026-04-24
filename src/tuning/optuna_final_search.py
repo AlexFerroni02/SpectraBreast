@@ -178,21 +178,48 @@ def run_final_optuna_search():
             epochs_ft = trial.suggest_int("epochs_ft", 30, 100)
 
         elif args.model == "Hybrid":
-            # Hybrid: Architecture FIXED from YAML, Optuna varies ONLY training params
             model_cfg = yaml_config.get("model", {})
             config["model"].update({
                 "architecture": model_cfg.get("architecture", "HybridCNNTransformer"),
                 "input_length": int(model_cfg.get("input_length", 500)),
-                "d_model": int(model_cfg.get("d_model", 64)),
-                "nhead": int(model_cfg.get("nhead", 4)),
-                "num_layers": int(model_cfg.get("num_layers", 2)),
+                "n_classes": n_classes
             })
             head_attr = yaml_config.get("training", {}).get("head_attr", "classifier")
-            mode = "finetune"
-            lr_lp = trial.suggest_float("lr_lp", 1e-4, 1e-2, log=True)
-            epochs_lp = trial.suggest_categorical("epochs_lp", [5, 10, 15, 20, 30])
-            lr_ft = trial.suggest_float("lr_ft", 1e-6, 5e-4, log=True)
-            epochs_ft = trial.suggest_int("epochs_ft", 30, 100)
+            
+            if pretrained_path:
+                # Modalità Finetune
+                mode = "finetune"
+                config["model"].update({
+                    "d_model": int(model_cfg.get("d_model", 64)),
+                    "nhead": int(model_cfg.get("nhead", 4)),
+                    "num_layers": int(model_cfg.get("num_layers", 2)),
+                    "dropout": float(model_cfg.get("dropout", 0.1)),
+                })
+                lr_lp = trial.suggest_float("lr_lp", 1e-4, 1e-2, log=True)
+                epochs_lp = trial.suggest_categorical("epochs_lp", [5, 10, 15, 20, 30])
+                lr_ft = trial.suggest_float("lr_ft", 1e-6, 5e-4, log=True)
+                epochs_ft = trial.suggest_int("epochs_ft", 30, 100)
+            else:
+                # Modalità Scratch: Ottimizziamo anche l'architettura
+                mode = "scratch"
+                epochs_lp = 0
+                lr_lp = 0
+                lr_ft = trial.suggest_float("learning_rate", 1e-5, 5e-3, log=True)
+                epochs_ft = trial.suggest_int("epochs", 30, 150)
+                
+                nhead = trial.suggest_categorical("nhead", [2, 4, 8])
+                d_model = trial.suggest_categorical("d_model", [32, 64, 128])
+                # Evitiamo errori Pytorch: d_model deve essere multiplo di nhead
+                if d_model % nhead != 0:
+                    d_model = (d_model // nhead) * nhead
+                    if d_model == 0: d_model = nhead
+                    
+                config["model"].update({
+                    "d_model": d_model,
+                    "nhead": nhead,
+                    "num_layers": trial.suggest_int("num_layers", 1, 4),
+                    "dropout": trial.suggest_float("dropout", 0.1, 0.5),
+                })
 
         # --- K-FOLD LOOP ---
         fold_val_f1_scores = []
@@ -280,17 +307,17 @@ def run_final_optuna_search():
     # Print in YAML-friendly format
     print("training:")
     for key, value in sorted(study.best_trial.params.items()):
-        if key in ("num_layers", "base_filters", "kernel_size"):
+        if key in ("num_layers", "base_filters", "kernel_size", "d_model", "nhead", "dropout"):
             continue  # These go under model section
         if isinstance(value, float):
             print(f"  {key}: {value}")
         else:
             print(f"  {key}: {value}")
 
-    # Print model params for CNN
-    if args.model == "CNN":
+    # Print model params for CNN and Hybrid scratch
+    if args.model in ("CNN", "Hybrid"):
         print("\nmodel:")
-        for key in ("num_layers", "base_filters", "kernel_size"):
+        for key in ("num_layers", "base_filters", "kernel_size", "d_model", "nhead", "dropout"):
             if key in study.best_trial.params:
                 print(f"  {key}: {study.best_trial.params[key]}")
 

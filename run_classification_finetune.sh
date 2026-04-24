@@ -14,8 +14,8 @@ module purge
 module load PyTorch/1.10.0-foss-2021a-CUDA-11.3.1
 export PYTHONPATH=$HOME/.local/lib/python3.9/site-packages:$PYTHONPATH
 
-# USO: sbatch run_classification_finetune.sh configs/classification/IBD/CNN/exp_01_cnn_baseline.yaml
-CONFIG_FILE=${1:-configs/classification/IBD/Transformer/fine-tune/exp_01_smae_baseline.yaml}
+# USO: sbatch run_classification_finetune.sh configs/classification/IBD/Transformer/fine-tune/exp_02_smae.yaml
+CONFIG_FILE=${1:-configs/classification/IBD/Transformer/fine-tune/exp_02_smae.yaml}
 
 if [ ! -f "$CONFIG_FILE" ]; then
     echo "ERRORE: File YAML non trovato: $CONFIG_FILE"
@@ -37,7 +37,7 @@ echo "Avvio Finetune: $CONFIG_FILE"
 echo "Output Directory:  $OUTPUT_DIR"
 echo "=========================================="
 
-python3 -m pip install --user --upgrade typing-extensions referencing jsonschema nbconvert scikit-learn seaborn h5py pyyaml jupyter
+python3 -m pip install --user --upgrade typing-extensions referencing jsonschema nbconvert scikit-learn seaborn h5py pyyaml jupyter tqdm timm einops
 
 srun python3 -m jupyter nbconvert --execute "$NOTEBOOK_IN" \
     --to notebook \

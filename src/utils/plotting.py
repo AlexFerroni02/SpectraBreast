@@ -3,6 +3,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 import torch
 import torch.nn.functional as F
+from sklearn.metrics import (
+    confusion_matrix, ConfusionMatrixDisplay, 
+    RocCurveDisplay, PrecisionRecallDisplay,
+    f1_score, accuracy_score, roc_auc_score
+)
+
+
+# ============================================================
+# PRE-TRAINING PLOTTING
+# ============================================================
 
 def plot_mae_history_sota(history, report_dir):
     """Plots Reconstruction Loss and Masked Cosine Similarity."""
@@ -72,9 +82,7 @@ def plot_mae_reconstruction_sota(model, val_loader, device, architecture, report
         orig, recon, msk = original_np[i].squeeze(), reconstructed_np[i].squeeze(), mask_np[i].squeeze()
         x_vals = np.arange(len(orig))
         
-        # 🌟 LA SOLUZIONE: Incolliamo il vero originale sulle parti visibili!
-        # Se msk == 1 (giallo), usa la predizione del modello (recon)
-        # Se msk == 0 (bianco), usa l'input originale perfetto (orig)
+        # Incolliamo il vero originale sulle parti visibili
         final_reconstruction = np.where(msk == 1, recon, orig)
         
         # Khaki Background for masked regions
@@ -98,3 +106,88 @@ def plot_mae_reconstruction_sota(model, val_loader, device, architecture, report
     save_path = os.path.join(report_dir, "fig_reconstruction_sota.png")
     plt.savefig(save_path, dpi=150)
     plt.show()
+
+
+# ============================================================
+# CLASSIFICATION PLOTTING
+# ============================================================
+
+def plot_fold_metrics(history, labels_test, preds_test, probs_test, fold_name, save_path=None):
+    """
+    Plots a 1x4 figure for a single K-Fold: Loss, Confusion Matrix, ROC, PR.
+    """
+    fig, axes = plt.subplots(1, 4, figsize=(26, 5))
+
+    # 1. Loss curves
+    axes[0].plot(history["train_loss"], label="Train Loss", color="steelblue", linewidth=2)
+    axes[0].plot(history["val_loss"], label="Val Loss", color="darkorange", linestyle="--", linewidth=2)
+    axes[0].set_title(f"Loss ({fold_name})")
+    axes[0].set_xlabel("Epoch")
+    axes[0].legend()
+    axes[0].grid(alpha=0.3)
+
+    # 2. Confusion Matrix
+    cm = confusion_matrix(labels_test, preds_test)
+    ConfusionMatrixDisplay(cm).plot(ax=axes[1], cmap="Blues")
+    axes[1].set_title(f"Confusion Matrix ({fold_name})")
+
+    # 3. ROC Curve
+    if len(np.unique(labels_test)) > 1:
+        RocCurveDisplay.from_predictions(labels_test, probs_test, ax=axes[2])
+        axes[2].set_title(f"ROC Curve ({fold_name})")
+    else:
+        axes[2].text(0.5, 0.5, "Only 1 class", ha="center", va="center", fontsize=14)
+        axes[2].set_title(f"ROC Curve ({fold_name})")
+
+    # 4. PR Curve
+    if len(np.unique(labels_test)) > 1:
+        PrecisionRecallDisplay.from_predictions(labels_test, probs_test, ax=axes[3])
+        axes[3].set_title(f"PR Curve ({fold_name})")
+    else:
+        axes[3].text(0.5, 0.5, "Only 1 class", ha="center", va="center", fontsize=14)
+        axes[3].set_title(f"PR Curve ({fold_name})")
+
+    plt.tight_layout()
+    if save_path:
+        os.makedirs(os.path.dirname(save_path), exist_ok=True)
+        plt.savefig(save_path, dpi=150)
+    plt.close()
+
+
+def plot_aggregated_metrics(labels_all, preds_all, probs_all, scheme_name, save_path=None):
+    """
+    Plots aggregated metrics across all folds: Confusion Matrix, ROC, PR.
+    """
+    fig, axes = plt.subplots(1, 3, figsize=(20, 5))
+
+    # 1. Aggregated Confusion Matrix
+    cm = confusion_matrix(labels_all, preds_all)
+    ConfusionMatrixDisplay(cm).plot(ax=axes[0], cmap="Blues")
+    axes[0].set_title(f"Aggregated Confusion Matrix ({scheme_name})")
+
+    # 2. Aggregated ROC
+    if len(np.unique(labels_all)) > 1:
+        RocCurveDisplay.from_predictions(labels_all, probs_all, ax=axes[1])
+        axes[1].set_title(f"Aggregated ROC ({scheme_name})")
+    else:
+        axes[1].text(0.5, 0.5, "Only 1 class", ha="center", va="center", fontsize=14)
+
+    # 3. Aggregated PR
+    if len(np.unique(labels_all)) > 1:
+        PrecisionRecallDisplay.from_predictions(labels_all, probs_all, ax=axes[2])
+        axes[2].set_title(f"Aggregated PR Curve ({scheme_name})")
+    else:
+        axes[2].text(0.5, 0.5, "Only 1 class", ha="center", va="center", fontsize=14)
+
+    overall_f1 = f1_score(labels_all, preds_all, average="macro")
+    overall_acc = accuracy_score(labels_all, preds_all)
+    fig.suptitle(
+        f"{scheme_name} — Macro F1: {overall_f1:.4f} | Accuracy: {overall_acc:.4f}",
+        fontsize=14, fontweight="bold"
+    )
+
+    plt.tight_layout()
+    if save_path:
+        os.makedirs(os.path.dirname(save_path), exist_ok=True)
+        plt.savefig(save_path, dpi=150)
+    plt.close()

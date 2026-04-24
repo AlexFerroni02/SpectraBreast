@@ -16,7 +16,7 @@ export PYTHONPATH=$HOME/.local/lib/python3.9/site-packages:$PYTHONPATH
 
 # Verifica argomenti input. 
 # USO: sbatch run_classification.sh configs/classification/IBD/CNN/exp_02_cnn_kfold.yaml
-CONFIG_FILE=${1:-configs/classification/IBD/CNN/exp_03_cnn_optuna_final.yaml}
+CONFIG_FILE=${1:-configs/classification/IBD/Hybrid/exp_01_scratch.yaml}
 
 if [ ! -f "$CONFIG_FILE" ]; then
     echo "ERRORE: File YAML non trovato: $CONFIG_FILE"
@@ -38,7 +38,7 @@ echo "Avvio Esperimento: $CONFIG_FILE"
 echo "Output Directory:  $OUTPUT_DIR"
 echo "=========================================="
 
-python3 -m pip install --user --upgrade typing-extensions referencing jsonschema nbconvert scikit-learn seaborn h5py pyyaml jupyter
+python3 -m pip install --user --upgrade typing-extensions referencing jsonschema nbconvert scikit-learn seaborn h5py pyyaml jupyter tqdm timm einops
 
 srun python3 -m jupyter nbconvert --execute "$NOTEBOOK_IN" \
     --to notebook \
