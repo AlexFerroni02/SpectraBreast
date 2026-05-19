@@ -8,6 +8,14 @@ sb_env/
 experiments/
 job_*
 *.so
+
+# Immagini / Plot
+*.png
+*.jpg
+*.jpeg
+*.svg
+*.gif
+
 .tmp.driveupload/
 # Distribution / packaging
 .Python

@@ -131,7 +131,10 @@ def train_mae(model, train_loader, val_loader, config, device, architecture):
 
     for epoch in range(epochs):
         train_loss, train_sim = train_mae_one_epoch(model, train_loader, optimizer, device, architecture)
-        val_loss, val_sim   = evaluate_mae(model, val_loader, device, architecture)
+        if val_loader is not None:
+            val_loss, val_sim   = evaluate_mae(model, val_loader, device, architecture)
+        else:
+            val_loss, val_sim   = train_loss, train_sim
         
         history['train_loss'].append(train_loss)
         history['val_loss'].append(val_loss)

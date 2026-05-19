@@ -1,0 +1,32 @@
+experiment_name: "exp_02_hybrid_optuna_final"
+dataset:
+  name: "IBD"
+  path: "data/IBD/Processed/IBD_Dataset_500pt.mat"
+  batch_size: 32
+
+split:
+  scheme: "kfold"
+  n_splits: 5
+  val_size: 0.20
+  seed: 42
+
+model:
+  architecture: "HybridCNNTransformer"
+  input_length: 500
+  n_classes: 2
+  num_layers: 2
+  d_model: 64
+  nhead: 2
+  dropout: 0.37008913386727543
+
+training:
+  optimizer: "AdamW"
+  scheduler_factor: 0.5
+  batch_size: 32
+  epochs: 96
+  grad_clip: 0.8124394682148722
+  learning_rate: 0.0013096993583538738
+  patience: 24
+  pos_weight_multiplier: 1.737141346225744
+  scheduler_patience: 8
+  weight_decay: 0.00017358043269263717

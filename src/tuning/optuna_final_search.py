@@ -21,8 +21,7 @@ import torch
 import numpy as np
 import optuna
 from torch.utils.data import DataLoader, TensorDataset
-
-# Add project root to path
+from src.data.augmentation import RamanDataset
 PROJECT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
 if PROJECT_PATH not in sys.path:
     sys.path.insert(0, PROJECT_PATH)
@@ -98,7 +97,7 @@ def run_final_optuna_search():
     X_full, Y_full = dataset.X, dataset.y
     groups = dataset.groups
 
-    if X_full.shape[0] == 500 or (X_full.ndim == 2 and X_full.shape[1] > X_full.shape[0] and X_full.shape[0] < 1000):
+    if X_full.shape[0] == 500 and len(Y_full) != 500:
         X_full = X_full.T
 
     N, L = X_full.shape
@@ -116,6 +115,8 @@ def run_final_optuna_search():
     base_dir = os.path.abspath("experiments/optuna")
     os.makedirs(base_dir, exist_ok=True)
     study_name = f"study_FINAL_{args.model.lower()}_{args.dataset.lower()}"
+    if pretrained_path:
+        study_name += "_finetune_robust_v3"
     db_path = f"sqlite:///{os.path.join(base_dir, study_name + '.db')}"
 
     # ------------------------------------------
@@ -127,20 +128,28 @@ def run_final_optuna_search():
 
         # --- COMMON TRAINING HYPERPARAMETERS ---
         batch_size = trial.suggest_categorical("batch_size", [32, 64])
-        weight_decay = trial.suggest_float("weight_decay", 1e-5, 1e-2, log=True)
-        patience = trial.suggest_int("patience", 10, 25)
+        weight_decay = 0.01 # Default, overridden below
+        patience = 20 # Fixed early stopping
         scheduler_patience = trial.suggest_int("scheduler_patience", 3, 8)
         scheduler_factor = 0.5
         pos_weight_multiplier = trial.suggest_float("pos_weight_multiplier", 1.0, 3.0)
-        grad_clip = trial.suggest_float("grad_clip", 0.5, 2.0)
+        grad_clip = 1.0 # Default, overridden below
 
         # --- BUILD CONFIG BASED ON MODEL TYPE ---
         config = {
             "model": {"input_length": L, "n_classes": n_classes},
-            "training": {"weight_decay": weight_decay, "patience": patience}
+            "training": {
+                "weight_decay": weight_decay, 
+                "patience": patience,
+                "scheduler_patience": scheduler_patience,
+                "scheduler_factor": scheduler_factor
+            }
         }
 
         if args.model == "CNN":
+            weight_decay = 0.01
+            grad_clip = 1.0
+            config["training"]["weight_decay"] = weight_decay
             # CNN: Optuna varies ARCHITECTURE + training params
             lr = trial.suggest_float("lr", 1e-5, 5e-3, log=True)
             epochs = trial.suggest_int("epochs", 30, 100)
@@ -159,6 +168,9 @@ def run_final_optuna_search():
             epochs_ft = epochs
 
         elif args.model == "Transformer":
+            weight_decay = 0.01
+            grad_clip = 1.0
+            config["training"]["weight_decay"] = weight_decay
             # Transformer: Architecture FIXED from YAML, Optuna varies ONLY training params
             model_cfg = yaml_config.get("model", {})
             config["model"].update({
@@ -173,9 +185,9 @@ def run_final_optuna_search():
             head_attr = yaml_config.get("training", {}).get("head_attr", "classifier")
             mode = "finetune"
             lr_lp = trial.suggest_float("lr_lp", 1e-4, 1e-2, log=True)
-            epochs_lp = trial.suggest_categorical("epochs_lp", [5, 10, 15, 20, 30])
-            lr_ft = trial.suggest_float("lr_ft", 1e-6, 5e-4, log=True)
-            epochs_ft = trial.suggest_int("epochs_ft", 30, 100)
+            epochs_lp = 50
+            lr_ft = trial.suggest_float("lr_ft", 1e-6, 5e-5, log=True)
+            epochs_ft = 65
 
         elif args.model == "Hybrid":
             model_cfg = yaml_config.get("model", {})
@@ -195,12 +207,25 @@ def run_final_optuna_search():
                     "num_layers": int(model_cfg.get("num_layers", 2)),
                     "dropout": float(model_cfg.get("dropout", 0.1)),
                 })
-                lr_lp = trial.suggest_float("lr_lp", 1e-4, 1e-2, log=True)
-                epochs_lp = trial.suggest_categorical("epochs_lp", [5, 10, 15, 20, 30])
-                lr_ft = trial.suggest_float("lr_ft", 1e-6, 5e-4, log=True)
-                epochs_ft = trial.suggest_int("epochs_ft", 30, 100)
+                
+                # --- STRATEGIA STABILE PER FINETUNING ---
+                # Fissiamo regolarizzatori per ridurre la varianza
+                grad_clip = 1.0
+                weight_decay = 0.01
+                config["training"]["weight_decay"] = weight_decay
+                
+                # Linear Probe prolungato e con LR alto per scaldare bene la testa
+                lr_lp = trial.suggest_float("lr_lp", 5e-4, 5e-3, log=True)
+                epochs_lp = 50
+                
+                # Fine-Tuning delicatissimo per non distruggere le feature fisiche MAE
+                lr_ft = trial.suggest_float("lr_ft", 1e-6, 5e-5, log=True)
+                epochs_ft = 65
             else:
                 # Modalità Scratch: Ottimizziamo anche l'architettura
+                weight_decay = 0.01
+                grad_clip = 1.0
+                config["training"]["weight_decay"] = weight_decay
                 mode = "scratch"
                 epochs_lp = 0
                 lr_lp = 0
@@ -226,11 +251,11 @@ def run_final_optuna_search():
 
         for fold in folds:
             train_loader = DataLoader(
-                TensorDataset(tensor_x[fold.idx_train], tensor_y[fold.idx_train]),
+                RamanDataset(tensor_x[fold.idx_train], tensor_y[fold.idx_train], is_train=True),
                 batch_size=batch_size, shuffle=True
             )
             val_loader = DataLoader(
-                TensorDataset(tensor_x[fold.idx_val], tensor_y[fold.idx_val]),
+                RamanDataset(tensor_x[fold.idx_val], tensor_y[fold.idx_val], is_train=False),
                 batch_size=batch_size, shuffle=False
             )
 

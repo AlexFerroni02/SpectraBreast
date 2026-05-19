@@ -1,0 +1,38 @@
+experiment_name: "exp_04_hybrid_finetune_final"
+author: "AI Assistant"
+
+dataset:
+  name: "IBD"
+  path: "data/IBD/Processed/IBD_Dataset_500pt.mat"
+  batch_size: 32
+
+model:
+  architecture: "HybridCNNTransformer"
+  input_length: 500
+  n_classes: 2
+  d_model: 64          # Must match pretraining
+  nhead: 4             # Must match pretraining
+  num_layers: 2        # Must match pretraining
+  dropout: 0.1
+
+pretrain:
+  pretrained_path: "experiments/pretraining/exp_03_hybrid_mae_optimal/best_pretrained_model.pth"
+
+training:
+  mode: "finetune"
+  head_attr: "classifier"
+  optimizer: "AdamW"
+  batch_size: 64
+  lr_lp: 0.00057
+  lr_ft: 1.41e-06
+  patience: 16
+  pos_weight_multiplier: 2.48
+ 
+
+  
+
+split:
+  scheme: "kfold"
+  n_splits: 5
+  val_size: 0.20
+  seed: 42
