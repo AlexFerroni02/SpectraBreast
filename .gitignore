@@ -5,8 +5,17 @@ __pycache__/
 data/
 sb_env/
 # C extensions
+experiments/
 job_*
 *.so
+
+# Immagini / Plot
+*.png
+*.jpg
+*.jpeg
+*.svg
+*.gif
+
 .tmp.driveupload/
 # Distribution / packaging
 .Python
