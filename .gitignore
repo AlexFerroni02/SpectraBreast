@@ -216,3 +216,10 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Deep Learning weights and checkpoints
+*.h5
+*.pth
+*.data-*
+*.index
+checkpoint
